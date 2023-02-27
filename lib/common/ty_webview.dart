@@ -7,7 +7,6 @@ import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 // #enddocregion platform_imports
 
-
 class TYWebView extends StatefulWidget {
   const TYWebView({
     super.key,
@@ -67,14 +66,14 @@ Page resource error:
   isForMainFrame: ${error.isForMainFrame}
           ''');
           },
-          onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith('https://www.baidu.com')) {
-              debugPrint('blocking navigation to ${request.url}');
-              return NavigationDecision.prevent;
-            }
-            debugPrint('allowing navigation to ${request.url}');
-            return NavigationDecision.navigate;
-          },
+          // onNavigationRequest: (NavigationRequest request) {
+          //   if (request.url.startsWith('https://www.youtube.com/')) {
+          //     debugPrint('blocking navigation to ${request.url}');
+          //     return NavigationDecision.prevent;
+          //   }
+          //   debugPrint('allowing navigation to ${request.url}');
+          //   return NavigationDecision.navigate;
+          // },
         ),
       )
       ..addJavaScriptChannel(
@@ -101,8 +100,8 @@ Page resource error:
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // 背景是绿色
-      backgroundColor: Colors.green,
+      // 背景是白色
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(widget.title),
         // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
@@ -120,7 +119,7 @@ Page resource error:
     return FloatingActionButton(
       onPressed: () async {
         final String? url = await _controller.currentUrl();
-        if (context.mounted) {
+        if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Favorited $url')),
           );
@@ -131,11 +130,16 @@ Page resource error:
   }
 }
 
-class NavigationControls extends StatelessWidget {
+class NavigationControls extends StatefulWidget {
   const NavigationControls({super.key, required this.webViewController});
 
   final WebViewController webViewController;
 
+  @override
+  State<NavigationControls> createState() => _NavigationControlsState();
+}
+
+class _NavigationControlsState extends State<NavigationControls> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -143,10 +147,10 @@ class NavigationControls extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () async {
-            if (await webViewController.canGoBack()) {
-              await webViewController.goBack();
+            if (await widget.webViewController.canGoBack()) {
+              await widget.webViewController.goBack();
             } else {
-              if (context.mounted) {
+              if (mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('No back history item')),
                 );
@@ -157,10 +161,10 @@ class NavigationControls extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.arrow_forward_ios),
           onPressed: () async {
-            if (await webViewController.canGoForward()) {
-              await webViewController.goForward();
+            if (await widget.webViewController.canGoForward()) {
+              await widget.webViewController.goForward();
             } else {
-              if (context.mounted) {
+              if (mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('No forward history item')),
                 );
@@ -170,10 +174,9 @@ class NavigationControls extends StatelessWidget {
         ),
         IconButton(
           icon: const Icon(Icons.replay),
-          onPressed: () => webViewController.reload(),
+          onPressed: () => widget.webViewController.reload(),
         ),
       ],
     );
   }
 }
-
