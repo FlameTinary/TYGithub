@@ -22,7 +22,6 @@ class TYWebView extends StatefulWidget {
 }
 
 class _TYWebViewState extends State<TYWebView> {
-
   late final WebViewController _controller;
 
   @override
@@ -53,6 +52,13 @@ class _TYWebViewState extends State<TYWebView> {
           },
           onPageStarted: (String url) {
             debugPrint('Page started loading: $url');
+            //TODO: 这里是处理登录验证通过后返回的code，不应该放在这里，后期待优化
+            if (url.startsWith('tygithubapp://authed')) {
+              String? code = Uri.parse(url).queryParameters['code'];
+              if (code != null) {
+                Navigator.of(context).pop(code);
+              }
+            }
           },
           onPageFinished: (String url) {
             debugPrint('Page finished loading: $url');
@@ -90,14 +96,13 @@ Page resource error:
 
   @override
   Widget build(BuildContext context) {
-
     // 从路由中获取参数
     Map args = ModalRoute.of(context)!.settings.arguments as Map;
     debugPrint('arguments: $args');
     var url = args['url'];
     var title = args['title'];
     _controller.loadRequest(Uri.parse(url));
-    
+
     return Scaffold(
       // 背景是白色
       backgroundColor: Colors.white,
@@ -105,7 +110,7 @@ Page resource error:
         title: Text(title),
         // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
         // actions: <Widget>[
-          // NavigationControls(webViewController: _controller),
+        // NavigationControls(webViewController: _controller),
         // ],
       ),
       body: WebViewWidget(controller: _controller),

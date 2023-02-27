@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tygithub/widgets/ty_input_widget.dart';
-import 'package:tygithub/common/ty_webview.dart';
+import 'package:tygithub/api/apis.dart';
+import 'package:tygithub/common/ty_http.dart';
+import 'package:tygithub/api/apis.dart';
+import 'package:tygithub/net/client_config.dart';
+import 'package:tygithub/net/net_config.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -93,10 +97,21 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () {
                             Navigator.pushNamed(context, 'webview', arguments: {
                               'title': 'github',
-                              'url': 'https://www.github.com',
+                              'url': TYApi.oauthUrl,
+                            }).then((code) {
+                              // TODO: 这里后续会重新整理代码
+                              // 拿到了github登录后的code
+                              // 执行登录操作
+                              TYHttp().post('${TYNetConfig.baseUrl}${TYApi.loginUrl}', params: {
+                                'client_id': TYClientConfig.CLIENT_ID,
+                                'client_secret': TYClientConfig.CLIENT_SECRET,
+                                'code': code,
+                              }).then((value) {
+                                print('--------$value');
+                              });
                             });
                           },
-                          child: const Text('Forget Password'),
+                          child: const Text('github'),
                         ),
                       ),
                     ),
