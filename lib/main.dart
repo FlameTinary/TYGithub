@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tygithub/pages/login/login_page.dart';
+import 'package:tygithub/common/ty_webview.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +26,18 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: Map.fromEntries([
+        // 登录页面
+        MapEntry('/login', (context) => LoginPage()),
+        MapEntry('/',
+            (context) => const MyHomePage(title: 'Flutter Demo Home Page')),
+        MapEntry(
+            'webview',
+            (context) => const TYWebView(
+                  url: 'https://www.baidu.com',
+                  title: '百度',
+                )),
+      ]),
     );
   }
 }
@@ -101,6 +114,14 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            // 登录按钮
+            ElevatedButton(
+              onPressed: () {
+                // 跳转到登录页面
+                Navigator.pushNamed(context, '/login');
+              },
+              child: const Text('登录'),
             ),
           ],
         ),
