@@ -32,11 +32,9 @@ class MyApp extends StatelessWidget {
         MapEntry('/',
             (context) => const MyHomePage(title: 'Flutter Demo Home Page')),
         MapEntry(
-            'webview',
-            (context) => const TYWebView(
-                  url: 'https://www.baidu.com',
-                  title: '百度',
-                )),
+          'webview',
+          (context) => const TYWebView(),
+        )
       ]),
     );
   }

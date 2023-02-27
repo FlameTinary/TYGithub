@@ -91,9 +91,10 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         child: ElevatedButton(
                           onPressed: () {
-                            print(accountController.text);
-                            print(passwordController.text);
-                            Navigator.pushNamed(context, 'webview');
+                            Navigator.pushNamed(context, 'webview', arguments: {
+                              'title': 'github',
+                              'url': 'https://www.github.com',
+                            });
                           },
                           child: const Text('Forget Password'),
                         ),

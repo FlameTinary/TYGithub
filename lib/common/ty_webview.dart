@@ -10,24 +10,24 @@ import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 class TYWebView extends StatefulWidget {
   const TYWebView({
     super.key,
-    required this.url,
-    required this.title,
+    // required this.url,
+    // required this.title,
   });
 
-  final String url;
-  final String title;
+  // final String url;
+  // final String title;
 
   @override
   State<TYWebView> createState() => _TYWebViewState();
 }
 
 class _TYWebViewState extends State<TYWebView> {
+
   late final WebViewController _controller;
 
   @override
   void initState() {
     super.initState();
-
     // #docregion platform_features
     late final PlatformWebViewControllerCreationParams params;
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
@@ -66,14 +66,6 @@ Page resource error:
   isForMainFrame: ${error.isForMainFrame}
           ''');
           },
-          // onNavigationRequest: (NavigationRequest request) {
-          //   if (request.url.startsWith('https://www.youtube.com/')) {
-          //     debugPrint('blocking navigation to ${request.url}');
-          //     return NavigationDecision.prevent;
-          //   }
-          //   debugPrint('allowing navigation to ${request.url}');
-          //   return NavigationDecision.navigate;
-          // },
         ),
       )
       ..addJavaScriptChannel(
@@ -83,8 +75,7 @@ Page resource error:
             SnackBar(content: Text(message.message)),
           );
         },
-      )
-      ..loadRequest(Uri.parse('https://www.baidu.com'));
+      );
 
     // #docregion platform_features
     if (controller.platform is AndroidWebViewController) {
@@ -99,15 +90,23 @@ Page resource error:
 
   @override
   Widget build(BuildContext context) {
+
+    // 从路由中获取参数
+    Map args = ModalRoute.of(context)!.settings.arguments as Map;
+    debugPrint('arguments: $args');
+    var url = args['url'];
+    var title = args['title'];
+    _controller.loadRequest(Uri.parse(url));
+    
     return Scaffold(
       // 背景是白色
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
         // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
-        actions: <Widget>[
-          NavigationControls(webViewController: _controller),
-        ],
+        // actions: <Widget>[
+          // NavigationControls(webViewController: _controller),
+        // ],
       ),
       body: WebViewWidget(controller: _controller),
       floatingActionButton: favoriteButton(),
