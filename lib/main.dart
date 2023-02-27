@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tygithub/pages/login/login_page.dart';
 import 'package:tygithub/common/ty_webview.dart';
+import 'common/ty_http.dart';
 
 void main() {
   runApp(const MyApp());
@@ -121,6 +123,14 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: const Text('登录'),
             ),
+            // 测试按钮
+            ElevatedButton(
+                onPressed: () {
+                  TYHttp().get('https://www.baidu.com').then((value) {
+                    print(value);
+                  });
+                },
+                child: const Text("http test")),
           ],
         ),
       ),
