@@ -47,5 +47,34 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+        <key>NSAllowsArbitraryLoadsInWebContent</key>
+        <true/>
+    </dict>
+    <key>NSAppleMusicUsageDescription</key>
+    <string>Allow to get user music</string>
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>Allow to get user location in background</string>
+    <key>NSBluetoothPeripheralUsageDescription</key>
+    <string>Allow to get user location</string>
+    <key>NSCalendarsUsageDescription</key>
+    <string>Allow to get user calendars</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Allow user to scan QR codes using the camera</string>
+    <key>NSContactsUsageDescription</key>
+    <string>Allow to get user contacts</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Allow to get user location in background</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Allow to get user location in background</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Allow to get user location</string>
+    <key>NSMotionUsageDescription</key>
+    <string>Allow to get user motion</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>Allow to get user speech recognition</string>
 </dict>
 </plist>

@@ -1,10 +1,12 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tygithub/pages/login/login_page.dart';
-import 'package:tygithub/common/ty_webview.dart';
+import 'package:tygithub/providers/auth_provider.dart';
 import 'common/ty_http.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
@@ -14,30 +16,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider(
+      create: (_) => AuthProvider(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        routes: Map.fromEntries([
+          // 登录页面
+          MapEntry('/login', (context) => LoginPage()),
+          MapEntry('/',
+              (context) => const MyHomePage(title: 'Flutter Demo Home Page')),
+        ]),
       ),
-      routes: Map.fromEntries([
-        // 登录页面
-        MapEntry('/login', (context) => LoginPage()),
-        MapEntry('/',
-            (context) => const MyHomePage(title: 'Flutter Demo Home Page')),
-        MapEntry(
-          'webview',
-          (context) => const TYWebView(),
-        )
-      ]),
     );
   }
 }

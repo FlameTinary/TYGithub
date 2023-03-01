@@ -14,6 +14,7 @@ class TYHttp {
   TYHttp._internal() {
     debugPrint('_internal');
     BaseOptions baseOptions = BaseOptions();
+    baseOptions.headers['Accept'] = 'application/json';
     dio = Dio(baseOptions);
 
     // 添加request拦截器
@@ -69,31 +70,40 @@ class TYHttp {
     Options? options,
     CancelToken? cancelToken,
   }) async {
-    Response response = await dio.get(
-      path,
-      options: options,
-      cancelToken: cancelToken ?? _cancelToken,
-    );
-    return response;
+    try {
+      Response response = await dio.get(
+        path,
+        options: options,
+        cancelToken: cancelToken ?? _cancelToken,
+      );
+      return response;
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   // post请求
   // path 请求地址
   // params 请求对参数
   // 请求对配置
-  Future post(
+  Future? post(
     String path, {
     Map<String, dynamic>? params,
     Options? options,
     CancelToken? cancelToken,
   }) async {
-    Response response = await dio.post(
-      path,
-      data: params,
-      options: options,
-      cancelToken: cancelToken ?? _cancelToken,
-    );
-    return response;
+    Response response;
+    try {
+      response = await dio.post(
+        path,
+        data: params,
+        options: options,
+        cancelToken: cancelToken ?? _cancelToken,
+      );
+      return response;
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   // put请求
@@ -106,13 +116,18 @@ class TYHttp {
     Options? options,
     CancelToken? cancelToken,
   }) async {
-    Response response = await dio.put(
-      path,
-      data: params,
-      options: options,
-      cancelToken: cancelToken ?? _cancelToken,
-    );
-    return response;
+    // 将pub包裹在try catch中，防止报错
+    try {
+      Response response = await dio.put(
+        path,
+        data: params,
+        options: options,
+        cancelToken: cancelToken ?? _cancelToken,
+      );
+      return response;
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   // delete请求
@@ -125,13 +140,17 @@ class TYHttp {
     Options? options,
     CancelToken? cancelToken,
   }) async {
-    Response response = await dio.delete(
-      path,
-      data: params,
-      options: options,
-      cancelToken: cancelToken ?? _cancelToken,
-    );
-    return response;
+    try {
+      Response response = await dio.delete(
+        path,
+        data: params,
+        options: options,
+        cancelToken: cancelToken ?? _cancelToken,
+      );
+      return response;
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 }
 

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tygithub/widgets/ty_input_widget.dart';
-import 'package:tygithub/api/apis.dart';
-import 'package:tygithub/common/ty_http.dart';
-import 'package:tygithub/api/apis.dart';
-import 'package:tygithub/net/client_config.dart';
-import 'package:tygithub/net/net_config.dart';
+import 'package:provider/provider.dart';
+import 'package:tygithub/providers/auth_provider.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -46,78 +44,26 @@ class _LoginPageState extends State<LoginPage> {
           // 内边距
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                // 账号输入框
-                TYInputWidget(
-                  controller: accountController,
-                  hintText: "account",
-                  icon: Icons.login,
-                  obscureText: false,
-                  onChanged: (value) {
-                    print(value);
-                  },
-                ),
-                // 密码输入框
-                TYInputWidget(
-                  controller: passwordController,
-                  hintText: "password",
-                  icon: Icons.lock,
-                  obscureText: true,
-                  onChanged: (value) {
-                    print(value);
-                  },
-                ),
-                Row(
-                  children: [
-                    // 登录按钮
-                    Expanded(
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.only(top: 20, left: 10, right: 10),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            print(accountController.text);
-                            print(passwordController.text);
+            child: Consumer<AuthProvider>(
+              builder: (context, authProvider, child) => authProvider.isLoggedIn
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('You are logged in!'),
+                        ElevatedButton(
+                          onPressed: () async {
+                            await authProvider.logout();
                           },
-                          child: const Text('Login'),
+                          child: const Text('Logout'),
                         ),
-                      ),
+                      ],
+                    )
+                  : ElevatedButton(
+                      onPressed: () async {
+                        await authProvider.login(context);
+                      },
+                      child: const Text('Login with GitHub'),
                     ),
-                    // 忘记密码按钮
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        margin: const EdgeInsets.only(
-                          left: 10,
-                          right: 10,
-                          top: 20,
-                        ),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, 'webview', arguments: {
-                              'title': 'github',
-                              'url': TYApi.oauthUrl,
-                            }).then((code) {
-                              // TODO: 这里后续会重新整理代码
-                              // 拿到了github登录后的code
-                              // 执行登录操作
-                              TYHttp().post('${TYNetConfig.baseUrl}${TYApi.loginUrl}', params: {
-                                'client_id': TYClientConfig.CLIENT_ID,
-                                'client_secret': TYClientConfig.CLIENT_SECRET,
-                                'code': code,
-                              }).then((value) {
-                                print('--------$value');
-                              });
-                            });
-                          },
-                          child: const Text('github'),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
             ),
           ),
         ),

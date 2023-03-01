@@ -11,8 +11,6 @@ pubspec.lock
 # If you don't generate documentation locally you can remove this line.
 doc/api/
 
-client_config.dart
-
 # Avoid committing generated Javascript files:
 *.dart.js
 *.info.json      # Produced by the --dump-info flag.
@@ -21,3 +19,4 @@ client_config.dart
 *.js_
 *.js.deps
 *.js.map
+*.env
