@@ -6,6 +6,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:tygithub/pages/dynamic/dynamic_page.dart';
 import 'package:tygithub/pages/trend/trend_page.dart';
 import 'package:tygithub/pages/mine/mine_page.dart';
+import 'package:tygithub/pages/dynamic/repo_events_page.dart';
+
 
 void main() async {
   await dotenv.load(fileName: ".env");
@@ -27,7 +29,9 @@ class MyApp extends StatelessWidget {
         ),
         routes: Map.fromEntries([
           // 登录页面
-          MapEntry('/login', (context) => LoginPage()),
+          MapEntry('/login', (context) => const LoginPage()),
+          // 事件详情页面
+          MapEntry('/repo_event', (context) => const RepoEventsPage()),
         ]),
         home: Consumer<AuthProvider>(
           builder: (context, authProvider, child) {

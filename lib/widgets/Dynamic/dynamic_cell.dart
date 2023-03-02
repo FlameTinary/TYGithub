@@ -9,56 +9,60 @@ class DynamicCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(3),
-          // 阴影
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 1,
-              offset: const Offset(0, 1), // changes position of shadow
+      child: GestureDetector(
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(3),
+              // 阴影
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: const Offset(0, 1), // changes position of shadow
+                ),
+              ],
             ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 头像和昵称，横向排列
-                _avatarAndName(),
-                // 日期
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // 头像和昵称，横向排列
+                    _avatarAndName(),
+                    // 日期
+                    Container(
+                      margin: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        '${event.createdAt.year.toString()}-${event.createdAt.month.toString().padLeft(2, '0')}-${event.createdAt.day.toString().padLeft(2, '0')}',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                // 仓库名
                 Container(
-                  margin: const EdgeInsets.only(left: 10),
+                  margin: const EdgeInsets.only(top: 10),
                   child: Text(
-                    '${event.createdAt.year.toString()}-${event.createdAt.month.toString().padLeft(2, '0')}-${event.createdAt.day.toString().padLeft(2, '0')}',
+                    '${event.payload.action} ${event.repo.name}',
                     style: const TextStyle(
-                      fontSize: 12,
+                      fontSize: 14,
                       color: Colors.black,
                     ),
                   ),
                 ),
               ],
             ),
-            // 仓库名
-            Container(
-              margin: const EdgeInsets.only(top: 10),
-              child: Text(
-                '${event.payload.action} ${event.repo.name}',
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+          onTap: () {
+            Navigator.pushNamed(context, "/repo_event", arguments: event);
+          }),
     );
   }
 
