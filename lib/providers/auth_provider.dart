@@ -45,7 +45,7 @@ class AuthProvider with ChangeNotifier {
       'code': code,
     });
     if (response != null && response.statusCode == 200) {
-      String accessToken = jsonDecode(response.data)['access_token'] as String;
+      String accessToken = response.data['access_token'] as String;
       return accessToken;
     }
     return '';
@@ -60,6 +60,7 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> tryAutoLogin() async {
+    debugPrint('tryAutoLogin');
     final prefs = await SharedPreferences.getInstance();
     final accessToken = prefs.getString('access_token');
     if (accessToken != null && accessToken.isNotEmpty) {

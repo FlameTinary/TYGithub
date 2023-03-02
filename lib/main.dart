@@ -28,8 +28,17 @@ class MyApp extends StatelessWidget {
         routes: Map.fromEntries([
           // 登录页面
           MapEntry('/login', (context) => LoginPage()),
-          MapEntry('/', (context) => const MyHomePage(title: 'Github')),
         ]),
+        home: Consumer<AuthProvider>(
+          builder: (context, authProvider, child) {
+            if (!authProvider.isLoggedIn) {
+              authProvider.tryAutoLogin();
+            }
+            return authProvider.isLoggedIn
+                ? const MyHomePage(title: 'Github')
+                : const LoginPage();
+          },
+        ),
       ),
     );
   }
@@ -67,6 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         items: const [
+          // 动态
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: '动态',

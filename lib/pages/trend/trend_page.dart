@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tygithub/widgets/trend/trend_cell.dart';
 
 class TrendPage extends StatefulWidget {
   const TrendPage({super.key});
@@ -11,10 +12,12 @@ class _TrendPageState extends State<TrendPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Trend Page'),
+      body: ListView.builder(
+        itemBuilder: (context, index) {
+          return TrendCell();
+        },
+        itemCount: 100,
       ),
-      body: const Placeholder(),
     );
   }
 }
